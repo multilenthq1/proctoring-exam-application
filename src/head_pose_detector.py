@@ -74,8 +74,8 @@ class HeadPoseDetector:
                 # Camera matrix (approximate)
                 focal_length = 1 * img_w
                 cam_matrix = np.array([
-                    [focal_length, 0, img_h / 2],
-                    [0, focal_length, img_w / 2],
+                    [focal_length, 0, img_w / 2],
+                    [0, focal_length, img_h / 2],
                     [0, 0, 1]
                 ])
                 

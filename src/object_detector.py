@@ -33,6 +33,12 @@ class ObjectDetector:
         # or contour detection for phones, books, etc.
         self.suspicious_object_detected = False
         
+        # Configurable thresholds for phone-like object detection
+        self.min_object_area = 1000      # Minimum area in pixels
+        self.max_object_area = 50000     # Maximum area in pixels
+        self.min_aspect_ratio = 0.4      # Minimum width/height ratio
+        self.max_aspect_ratio = 0.7      # Maximum width/height ratio
+        
     def detect_hands(self, frame):
         """
         Detect hands in the frame.
@@ -135,7 +141,8 @@ class ObjectDetector:
             aspect_ratio = float(w) / h if h > 0 else 0
             
             # Phone-like objects: rectangular, specific size range
-            if 1000 < area < 50000 and 0.4 < aspect_ratio < 0.7:
+            if self.min_object_area < area < self.max_object_area and \
+               self.min_aspect_ratio < aspect_ratio < self.max_aspect_ratio:
                 phone_like_objects += 1
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
                 cv2.putText(frame, "Possible Object", (x, y-10),

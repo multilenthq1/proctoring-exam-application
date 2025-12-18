@@ -63,7 +63,7 @@ class NoiseDetector:
         Returns:
             float: RMS value
         """
-        count = len(data) / 2
+        count = len(data) // 2  # Use integer division
         format_str = "%dh" % count
         shorts = struct.unpack(format_str, data)
         

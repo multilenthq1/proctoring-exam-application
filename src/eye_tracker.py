@@ -25,12 +25,15 @@ class EyeTracker:
         )
         
         # Eye landmark indices (MediaPipe Face Mesh)
+        # These indices correspond to key points around the eye contours
+        # Used for Eye Aspect Ratio calculation and eye boundary detection
         self.LEFT_EYE = [362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398]
         self.RIGHT_EYE = [33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246]
         
-        # Left iris landmarks
+        # Iris landmark indices for gaze direction detection
+        # Left iris center and boundary points
         self.LEFT_IRIS = [474, 475, 476, 477]
-        # Right iris landmarks  
+        # Right iris center and boundary points
         self.RIGHT_IRIS = [469, 470, 471, 472]
         
         # Thresholds for eye tracking
