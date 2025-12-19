@@ -97,11 +97,11 @@ class ProctoringExamApp:
         self.frame_count += 1
         
         # Head Pose Detection
-        frame, pitch, yaw, roll, head_suspicious = self.head_pose_detector.detect_head_pose(frame)
+        frame, pitch, yaw, roll, head_suspicious, direction = self.head_pose_detector.detect_head_pose(frame)
         if head_suspicious:
             self.log_violation(
                 "HEAD_POSE",
-                f"Pitch: {int(pitch)}, Yaw: {int(yaw)}"
+                f"Direction: {direction}"
             )
         
         # Eye Tracking
@@ -115,9 +115,12 @@ class ProctoringExamApp:
         # Object Detection
         frame, detection_info, object_suspicious = self.object_detector.detect_objects(frame)
         if object_suspicious:
+            details = f"Faces: {detection_info['num_faces']}, Objects: {detection_info['num_objects']}"
+            if detection_info.get('phone_detected'):
+                details += ", PHONE DETECTED"
             self.log_violation(
                 "OBJECT_DETECTION",
-                f"Faces: {detection_info['num_faces']}, Objects: {detection_info['num_objects']}"
+                details
             )
         
         # Noise Detection (non-blocking)
@@ -130,14 +133,14 @@ class ProctoringExamApp:
         
         # Display noise level on frame
         noise_color = (0, 0, 255) if noise_suspicious else (0, 255, 0)
-        cv2.putText(frame, f"Noise: {int(noise_level)} dB", (20, 350), 
+        cv2.putText(frame, f"Noise: {int(noise_level)} dB", (20, 250), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, noise_color, 2)
         
         # Display session information
         elapsed_time = time.time() - self.session_start_time
-        cv2.putText(frame, f"Session Time: {int(elapsed_time)}s", (20, 390), 
+        cv2.putText(frame, f"Session Time: {int(elapsed_time)}s", (20, 290), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
-        cv2.putText(frame, f"Violations: {len(self.violations)}", (20, 420), 
+        cv2.putText(frame, f"Violations: {len(self.violations)}", (20, 320), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
         
         # Display instructions
