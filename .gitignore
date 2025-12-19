@@ -44,3 +44,11 @@ Thumbs.db
 *.log
 violations.txt
 exam_session_*.txt
+
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+debug/
+**/*~
